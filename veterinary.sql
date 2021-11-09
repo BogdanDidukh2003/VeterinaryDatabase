@@ -1,6 +1,16 @@
 CREATE SCHEMA IF NOT EXISTS bogdan_didukh DEFAULT CHARACTER SET utf8 ;
 USE bogdan_didukh;
 
+drop table if exists clinic;
+drop table if exists illness;
+drop table if exists medical_card;
+drop table if exists medical_card_has_illness;
+drop table if exists pet_owner;
+drop table if exists pet_type;
+drop table if exists pet;
+drop table if exists staff;
+drop table if exists appointment;
+
 create table clinic
 (
     id            int auto_increment
