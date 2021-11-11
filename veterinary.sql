@@ -11,173 +11,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema veterinary
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema veterinary
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `veterinary` DEFAULT CHARACTER SET utf8 ;
--- -----------------------------------------------------
--- Schema bogdan_didukh
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema bogdan_didukh
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `bogdan_didukh` DEFAULT CHARACTER SET utf8 ;
-USE `veterinary` ;
-
--- -----------------------------------------------------
--- Table `veterinary`.`pet_owner`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`pet_owner` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `first_name` VARCHAR(45) NOT NULL,
-  `last_name` VARCHAR(45) NOT NULL,
-  `street` VARCHAR(45) NOT NULL,
-  `city` VARCHAR(45) NOT NULL,
-  `state` VARCHAR(45) NOT NULL,
-  `phone_number` VARCHAR(15) NOT NULL,
-  `email_address` VARCHAR(320) NOT NULL,
-  PRIMARY KEY (`id`));
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`clinic`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`clinic` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `street` VARCHAR(45) NOT NULL,
-  `city` VARCHAR(45) NOT NULL,
-  `state` VARCHAR(45) NOT NULL,
-  `zip_code` CHAR(5) NOT NULL,
-  `phone_number` VARCHAR(15) NOT NULL,
-  `email_address` VARCHAR(320) NOT NULL,
-  PRIMARY KEY (`id`));
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`staff`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`staff` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `first_name` VARCHAR(45) NOT NULL,
-  `last_name` VARCHAR(45) NOT NULL,
-  `street` VARCHAR(45) NOT NULL,
-  `city` VARCHAR(45) NOT NULL,
-  `state` VARCHAR(45) NOT NULL,
-  `phone_number` VARCHAR(15) NOT NULL,
-  `email_address` VARCHAR(320) NOT NULL,
-  `clinic_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `clinic_id`),
-  CONSTRAINT `fk_staff_clinic1`
-    FOREIGN KEY (`clinic_id`)
-    REFERENCES `veterinary`.`clinic` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`appointment`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`appointment` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `day_of_week` ENUM('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun') NOT NULL,
-  `end_time` TIME NOT NULL,
-  `start_time` TIME NOT NULL,
-  `pet_owner_id` INT NOT NULL,
-  `staff_id` INT NOT NULL,
-  `staff_clinic_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `pet_owner_id`, `staff_id`, `staff_clinic_id`),
-  CONSTRAINT `fk_appointment_pet_owner1`
-    FOREIGN KEY (`pet_owner_id`)
-    REFERENCES `veterinary`.`pet_owner` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_appointment_staff1`
-    FOREIGN KEY (`staff_id` , `staff_clinic_id`)
-    REFERENCES `veterinary`.`staff` (`id` , `clinic_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`illness`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`illness` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `treatment_description` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`));
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`medical_card`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`medical_card` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `serial_number` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `serial_number_UNIQUE` (`serial_number` ASC) VISIBLE);
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`pet_type`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`pet_type` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`));
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`pet`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`pet` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `pet_owner_id` INT NOT NULL,
-  `pet_type_id` INT NOT NULL,
-  `medical_card_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `pet_owner_id`, `pet_type_id`),
-  UNIQUE INDEX `medical_card_id_UNIQUE` (`medical_card_id` ASC) VISIBLE,
-  INDEX `name` (`name` ASC) VISIBLE,
-  CONSTRAINT `fk_pet_pet_owner`
-    FOREIGN KEY (`pet_owner_id`)
-    REFERENCES `veterinary`.`pet_owner` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pet_pet_type1`
-    FOREIGN KEY (`pet_type_id`)
-    REFERENCES `veterinary`.`pet_type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pet_medical_card1`
-    FOREIGN KEY (`medical_card_id`)
-    REFERENCES `veterinary`.`medical_card` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
-
--- -----------------------------------------------------
--- Table `veterinary`.`medical_card_has_illness`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `veterinary`.`medical_card_has_illness` (
-  `medical_card_id` INT NOT NULL,
-  `illness_id` INT NOT NULL,
-  PRIMARY KEY (`medical_card_id`, `illness_id`),
-  CONSTRAINT `fk_medical_card_has_illness_medical_card1`
-    FOREIGN KEY (`medical_card_id`)
-    REFERENCES `veterinary`.`medical_card` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_medical_card_has_illness_illness1`
-    FOREIGN KEY (`illness_id`)
-    REFERENCES `veterinary`.`illness` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
 
 USE `bogdan_didukh` ;
 
@@ -185,7 +19,7 @@ USE `bogdan_didukh` ;
 -- Table `bogdan_didukh`.`clinic`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`clinic` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `street` VARCHAR(45) NOT NULL,
   `city` VARCHAR(45) NOT NULL,
@@ -201,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`clinic` (
 -- Table `bogdan_didukh`.`illness`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`illness` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `treatment_description` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -212,11 +46,11 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`illness` (
 -- Table `bogdan_didukh`.`medical_card`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`medical_card` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `serial_number` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `serial_number_UNIQUE` (`serial_number` ASC) VISIBLE,
-  INDEX `serial_naumber` (`serial_number` ASC) VISIBLE);
+  INDEX `serial_number` (`serial_number` ASC) VISIBLE);
 
 
 -- -----------------------------------------------------
@@ -228,17 +62,21 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`medical_card_has_illness` (
   PRIMARY KEY (`medical_card_id`, `illness_id`),
   CONSTRAINT `fk_medical_card_has_illness_illness1`
     FOREIGN KEY (`illness_id`)
-    REFERENCES `bogdan_didukh`.`illness` (`id`),
+    REFERENCES `bogdan_didukh`.`illness` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_medical_card_has_illness_medical_card1`
     FOREIGN KEY (`medical_card_id`)
-    REFERENCES `bogdan_didukh`.`medical_card` (`id`));
+    REFERENCES `bogdan_didukh`.`medical_card` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
 -- Table `bogdan_didukh`.`pet_owner`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`pet_owner` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `street` VARCHAR(45) NOT NULL,
@@ -254,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`pet_owner` (
 -- Table `bogdan_didukh`.`pet_type`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`pet_type` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
 
@@ -263,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`pet_type` (
 -- Table `bogdan_didukh`.`pet`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`pet` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `pet_owner_id` INT NOT NULL,
   `pet_type_id` INT NOT NULL,
@@ -272,20 +110,26 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`pet` (
   INDEX `name` (`name` ASC) VISIBLE,
   CONSTRAINT `fk_pet_medical_card1`
     FOREIGN KEY (`medical_card_id`)
-    REFERENCES `bogdan_didukh`.`medical_card` (`id`),
+    REFERENCES `bogdan_didukh`.`medical_card` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_pet_pet_owner`
     FOREIGN KEY (`pet_owner_id`)
-    REFERENCES `bogdan_didukh`.`pet_owner` (`id`),
+    REFERENCES `bogdan_didukh`.`pet_owner` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_pet_pet_type1`
     FOREIGN KEY (`pet_type_id`)
-    REFERENCES `bogdan_didukh`.`pet_type` (`id`));
+    REFERENCES `bogdan_didukh`.`pet_type` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);;
 
 
 -- -----------------------------------------------------
 -- Table `bogdan_didukh`.`staff`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`staff` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `street` VARCHAR(45) NOT NULL,
@@ -298,14 +142,16 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`staff` (
   INDEX `last_name` (`last_name` ASC) VISIBLE,
   CONSTRAINT `fk_staff_clinic1`
     FOREIGN KEY (`clinic_id`)
-    REFERENCES `bogdan_didukh`.`clinic` (`id`));
+    REFERENCES `bogdan_didukh`.`clinic` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
 -- Table `bogdan_didukh`.`appointment`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`appointment` (
-  `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `day_of_week` ENUM('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun') NOT NULL,
   `end_time` TIME NOT NULL,
   `start_time` TIME NOT NULL,
@@ -316,10 +162,14 @@ CREATE TABLE IF NOT EXISTS `bogdan_didukh`.`appointment` (
   INDEX `day_of_week` (`day_of_week` ASC) VISIBLE,
   CONSTRAINT `fk_appointment_pet_owner1`
     FOREIGN KEY (`pet_owner_id`)
-    REFERENCES `bogdan_didukh`.`pet_owner` (`id`),
+    REFERENCES `bogdan_didukh`.`pet_owner` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_appointment_staff1`
     FOREIGN KEY (`staff_id` , `staff_clinic_id`)
-    REFERENCES `bogdan_didukh`.`staff` (`id` , `clinic_id`));
+    REFERENCES `bogdan_didukh`.`staff` (`id` , `clinic_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
