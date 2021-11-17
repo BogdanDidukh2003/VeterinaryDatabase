@@ -30,3 +30,12 @@ information about available services that are available in the veterinary clinic
 for clients, records of clients and their pets, animal diagnoses,
 information about specialists in the clinic, their schedule with reference to visits,
 treatment for animals
+
+## Select training
+1. According to the variant of the task (table 1), write SQL-queries for
+sampling of necessary data and statistical information from databases,
+that are specified in the appendix, and to execute these requests to a DB in graphic
+MySQL Workbench tool, check for health and
+correctness of the received data.
+2. Demonstrate the results on the computer to the teacher.
+3. Based on the results of the work performed, draw up a report and submit it.
