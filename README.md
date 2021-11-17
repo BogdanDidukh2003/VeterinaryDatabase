@@ -22,6 +22,7 @@ tables to adjust so that they indicate between which columns they are
 establish a connection.
 Designation: P.K. - primary key; U.I. - unique index;
 I. - non-unique index; CHECK - test constraint.
+6. Add at least 2 indexes having analyzed the db structure.
 
 ## Variant
 Create a relational database schema that allows you to save
